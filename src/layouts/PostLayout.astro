@@ -1,0 +1,53 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '../styles/blog.css';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+  readTime?: string;
+}
+
+const { title, description, date, tags = [], readTime } = Astro.props;
+
+const fmtDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric',
+}).format(date);
+---
+
+<BaseLayout title={`${title} — ty2035.dev`} description={description}>
+  <main class="post-container">
+    <article class="post">
+      <header class="post-header">
+        <div class="post-meta">
+          <time datetime={date.toISOString()}>{fmtDate}</time>
+          {readTime && (
+            <>
+              <span class="post-sep">·</span>
+              <span>{readTime}</span>
+            </>
+          )}
+          {tags.length > 0 && tags.map((tag) => (
+            <>
+              <span class="post-sep">·</span>
+              <span class="post-tag">#{tag}</span>
+            </>
+          ))}
+        </div>
+        <h1 class="post-title">{title}</h1>
+        <p class="post-lede">{description}</p>
+      </header>
+
+      <div class="post-body">
+        <slot />
+      </div>
+    </article>
+
+    <nav class="post-nav">
+      <a href="/#writing" class="post-nav-link">← All posts</a>
+      <a href="/" class="post-nav-link post-nav-link--right">Home ↗</a>
+    </nav>
+  </main>
+</BaseLayout>

@@ -1,0 +1,75 @@
+{
+  "$ref": "#/definitions/projects",
+  "definitions": {
+    "projects": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "year": {
+          "type": "number"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "thumbImage": {
+          "type": "string"
+        },
+        "thumbColor": {
+          "type": "string",
+          "enum": [
+            "warm",
+            "cool",
+            "sun",
+            "fresh",
+            "muted",
+            "navy"
+          ],
+          "default": "navy"
+        },
+        "thumbIcon": {
+          "type": "string",
+          "enum": [
+            "circle",
+            "square",
+            "triangle",
+            "wave",
+            "dots",
+            "ring"
+          ],
+          "default": "circle"
+        },
+        "featured": {
+          "type": "boolean",
+          "default": true
+        },
+        "order": {
+          "type": "number",
+          "default": 99
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "year"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

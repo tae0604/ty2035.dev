@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+
+// Auto-load all non-draft blog posts, newest first
+const posts = (await getCollection('blog'))
+  .filter((p) => p.data.draft !== true)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmtDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
+---
+
+<section id="writing" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-label">03 — Writing</div>
+        <h2 class="section-title">
+          Words, <span class="italic-serif">when I have them</span>.
+        </h2>
+      </div>
+    </div>
+
+    {posts.length === 0 ? (
+      <div class="blog-empty">No posts yet — the first one's coming.</div>
+    ) : (
+      <ul class="blog-list">
+        {posts.map((post) => (
+          <li class="blog-item">
+            <a href={`/blog/${post.slug}/`} class="blog-link">
+              <div class="blog-date">{fmtDate(post.data.date)}</div>
+              <div>
+                <div class="blog-title">{post.data.title}</div>
+                <div class="blog-excerpt">{post.data.description}</div>
+              </div>
+              <div class="blog-arrow">↗</div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</section>

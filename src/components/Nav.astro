@@ -1,0 +1,21 @@
+---
+interface Props {
+  homeHref?: string;
+}
+const { homeHref = '/' } = Astro.props;
+---
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner glass glass--pill">
+    <a class="nav-brand" href={homeHref} aria-label="Home">
+      <span class="nav-dot"></span>
+      <span>{homeHref === '/' ? 'ty2035.dev' : '← ty2035.dev'}</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#works">Work</a></li>
+      <li><a href="/#writing">Writing</a></li>
+      <li><a href="/#connect">Elsewhere</a></li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,50 @@
+---
+interface Props {
+  handle?: string;
+  role?: string;
+  currently?: string;
+  avatar?: string;
+}
+
+const {
+  handle = '@ty2035',
+  role = 'Student · Designer · Developer',
+  currently = 'Middle school',
+  avatar = '/ty2035.svg',
+} = Astro.props;
+---
+
+<aside class="id-card glass reveal" data-delay="2" aria-label="Identity card">
+  <div class="id-header">
+    <div class="id-avatar" aria-hidden="true">
+      <img src={avatar} alt="" width="48" height="48" />
+    </div>
+    <div class="id-live">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span>online</span>
+    </div>
+  </div>
+
+  <div class="id-body">
+    <div class="id-handle">{handle}</div>
+    <div class="id-role">{role}</div>
+  </div>
+
+  <div class="id-divider"></div>
+
+  <div class="id-now">
+    <div class="id-now-label">Currently</div>
+    <div class="id-now-value">
+      {currently}
+      <span class="accent-dot" aria-hidden="true"></span>
+      Designing ty2035.dev
+    </div>
+  </div>
+
+  <div class="id-divider"></div>
+
+  <div class="id-footer">
+    <div class="id-clock" id="clock" aria-label="Seoul time">—:—:—</div>
+    <div class="id-tz">Seoul KST</div>
+  </div>
+</aside>

@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectRow from './ProjectRow.astro';
+
+// Auto-load all projects, filter featured ones, sort by order
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.featured !== false)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="works" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-label">02 — Selected work</div>
+        <h2 class="section-title">
+          Things I've made <span class="italic-serif">on Entry</span>.
+        </h2>
+      </div>
+      <a class="section-action" href="https://playentry.org/profile/ty2035" target="_blank" rel="noopener">
+        See all on Entry ↗
+      </a>
+    </div>
+
+    <div class="works-index">
+      {projects.map((project) => <ProjectRow project={project} />)}
+    </div>
+
+    <p class="note">
+      * Each project is a Markdown file in <code>src/content/projects/</code>. To add a new one, just create a new file there with the right frontmatter.
+    </p>
+  </div>
+</section>
