@@ -6,6 +6,6 @@ url: "https://playentry.org/project/66fd12a0dfc175d0a1da1d3e"
 tags: ["OS", "Entry"]
 thumbColor: "warm"
 thumbIcon: "circle"
-thumbImage: "public/thumbnails/Aurum.png"
+thumbImage: "/thumbnails/Aurum.png"
 order: 1
 ---
