@@ -21,7 +21,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://ty2035.d
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#262C3E" />
+    <meta name="theme-color" content="#12162a" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
@@ -49,8 +49,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://ty2035.d
   </head>
   <body>
     <div class="backdrop" aria-hidden="true">
-      <div class="grain"></div>
+      <div class="orb orb--magenta"></div>
+      <div class="orb orb--indigo"></div>
+      <div class="orb orb--violet"></div>
+      <div class="orb orb--rose"></div>
     </div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
     <div class="cursor-glow" aria-hidden="true"></div>
     <div class="scroll-progress" id="progress" aria-hidden="true"></div>
 
