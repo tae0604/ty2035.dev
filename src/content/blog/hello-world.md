@@ -10,17 +10,13 @@ This is a test
 
 ## Test
 
-I wanted a quiet corner of the web that's mine. A place to put my projects, my notes, and the little things I learn while making stuff.
+test
 
-Most of what I make ends up on Entry or Figma. Those places are great, but they're not *mine*. This site is.
-
-## What I'll write about
-
-- Things I'm building and what I learned making them
-- Moments where Figma and code meet (or don't)
-- Tiny experiments that don't fit anywhere else
+- test1
+- test2
+- test3
 
 > Hello, world!
 > <cite>test</cite>
 
-— Tae Young
+test
