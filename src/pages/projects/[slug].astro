@@ -17,18 +17,50 @@ interface Props {
 
 const { project } = Astro.props;
 const { Content } = await project.render();
-const { title, description, year, url, tags, thumbImage, thumbColor } = project.data;
+const data = project.data;
+const { title, description, year, url, tags, thumbImage, thumbColor, videoUrl, details } = data;
 
-// Find prev/next by order
+// Parse "Hello *world*" → italic segments
+const titleParts = title.split(/(\*[^*]+\*)/g).map((chunk) => {
+  if (chunk.startsWith('*') && chunk.endsWith('*')) {
+    return { italic: true, text: chunk.slice(1, -1) };
+  }
+  return { italic: false, text: chunk };
+});
+const plainTitle = title.replace(/\*([^*]+)\*/g, '$1');
+
+// Prev / next by order
 const all = (await getCollection('projects'))
   .filter((p) => p.data.featured !== false)
   .sort((a, b) => a.data.order - b.data.order);
 const idx = all.findIndex((p) => p.slug === project.slug);
 const prev = idx > 0 ? all[idx - 1] : null;
 const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+
+// Convert YouTube / Vimeo URL to embed format
+const toEmbed = (rawUrl: string) => {
+  try {
+    const u = new URL(rawUrl);
+    // YouTube
+    if (u.hostname.includes('youtube.com')) {
+      const vid = u.searchParams.get('v');
+      if (vid) return `https://www.youtube.com/embed/${vid}`;
+    }
+    if (u.hostname === 'youtu.be') {
+      return `https://www.youtube.com/embed${u.pathname}`;
+    }
+    // Vimeo
+    if (u.hostname.includes('vimeo.com')) {
+      return `https://player.vimeo.com/video${u.pathname}`;
+    }
+    return rawUrl;
+  } catch {
+    return rawUrl;
+  }
+};
 ---
 
-<BaseLayout title={`${title} — ty2035.dev`} description={description}>
+<BaseLayout title={`${plainTitle} — ty2035.dev`} description={description}>
   <main class="project-container">
     <article class="project">
       <div class="project-meta">
@@ -44,19 +76,44 @@ const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
       </div>
 
       <h1 class="project-title">
-        {title}<span class="project-period">.</span>
+        {titleParts.map((part) =>
+          part.italic ? <span class="italic-serif">{part.text}</span> : part.text
+        )}<span class="project-period">.</span>
       </h1>
       <p class="project-lede">{description}</p>
 
       <div class={`project-hero ${thumbImage ? '' : `project-hero--${thumbColor}`}`}>
         {thumbImage ? (
-          <img src={thumbImage} alt={title} />
+          <img src={thumbImage} alt={plainTitle} />
         ) : (
           <div class="project-hero-placeholder">
-            <span class="project-hero-title">{title}</span>
+            <span class="project-hero-title">{plainTitle}</span>
           </div>
         )}
       </div>
+
+      {videoUrl && (
+        <div class="project-video">
+          <iframe
+            src={toEmbed(videoUrl)}
+            title={`${plainTitle} — video`}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      )}
+
+      {details && details.length > 0 && (
+        <dl class="project-details">
+          {details.map((item) => (
+            <div class="project-detail">
+              <dt>{item.key}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       <div class="post-body project-body">
         <Content />
@@ -78,13 +135,13 @@ const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
       {prev ? (
         <a href={`/projects/${prev.slug}/`} class="project-nav-link project-nav-prev">
           <span class="project-nav-label">← Previous</span>
-          <span class="project-nav-title">{prev.data.title}</span>
+          <span class="project-nav-title">{prev.data.title.replace(/\*([^*]+)\*/g, '$1')}</span>
         </a>
       ) : <span />}
       {next ? (
         <a href={`/projects/${next.slug}/`} class="project-nav-link project-nav-next">
           <span class="project-nav-label">Next →</span>
-          <span class="project-nav-title">{next.data.title}</span>
+          <span class="project-nav-title">{next.data.title.replace(/\*([^*]+)\*/g, '$1')}</span>
         </a>
       ) : <span />}
     </nav>

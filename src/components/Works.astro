@@ -6,9 +6,8 @@ const allProjects = (await getCollection('projects'))
   .filter((p) => p.data.featured !== false)
   .sort((a, b) => a.data.order - b.data.order);
 
-const MAX_ON_HOME = 5;
-const projects = allProjects.slice(0, MAX_ON_HOME);
-const showAll = allProjects.length > MAX_ON_HOME;
+// Still cap the homepage display at 5
+const projects = allProjects.slice(0, 5);
 ---
 
 <section id="works" class="section">
@@ -24,7 +23,7 @@ const showAll = allProjects.length > MAX_ON_HOME;
       {projects.map((project) => <ProjectRow project={project} />)}
     </div>
 
-    {showAll && (
+    {projects.length > 0 && (
       <a class="blog-all" href="/projects/">
         <span>View all projects</span>
         <span class="blog-all-arrow">→</span>

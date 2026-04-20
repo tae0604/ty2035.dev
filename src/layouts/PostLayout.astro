@@ -15,9 +15,21 @@ const { title, description, date, tags = [], readTime } = Astro.props;
 const fmtDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric', month: 'long', day: 'numeric',
 }).format(date);
+
+// Parse title: "Hello *world*" → segments with italic flag
+// Write *word* in the frontmatter title to make that portion italic-serif.
+const titleParts = title.split(/(\*[^*]+\*)/g).map((chunk) => {
+  if (chunk.startsWith('*') && chunk.endsWith('*')) {
+    return { italic: true, text: chunk.slice(1, -1) };
+  }
+  return { italic: false, text: chunk };
+});
+
+// Strip markers for the plain-text title used in <title> and OG meta
+const plainTitle = title.replace(/\*([^*]+)\*/g, '$1');
 ---
 
-<BaseLayout title={`${title} — ty2035.dev`} description={description}>
+<BaseLayout title={`${plainTitle} — ty2035.dev`} description={description}>
   <main class="post-container">
     <article class="post">
       <header class="post-header">
@@ -36,7 +48,11 @@ const fmtDate = new Intl.DateTimeFormat('en-US', {
             </>
           ))}
         </div>
-        <h1 class="post-title">{title}</h1>
+        <h1 class="post-title">
+          {titleParts.map((part) =>
+            part.italic ? <span class="italic-serif">{part.text}</span> : part.text
+          )}
+        </h1>
         <p class="post-lede">{description}</p>
       </header>
 
@@ -46,7 +62,7 @@ const fmtDate = new Intl.DateTimeFormat('en-US', {
     </article>
 
     <nav class="post-nav">
-      <a href="/#writing" class="post-nav-link">← All posts</a>
+      <a href="/blog/" class="post-nav-link">← All posts</a>
       <a href="/" class="post-nav-link post-nav-link--right">Home ↗</a>
     </nav>
   </main>
