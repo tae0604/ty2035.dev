@@ -1,5 +1,5 @@
 ---
-title: "Hello, world"
+title: "Hello, *world*"
 description: "Test"
 date: 2026-04-19
 tags: ["test"]
