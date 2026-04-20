@@ -65,45 +65,6 @@
     onScroll();
   }
 
-  /* —— Cursor-following glow (desktop only) —— */
-  const glow = document.querySelector(".cursor-glow");
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (glow && finePointer && !reducedMotion) {
-    let tx = window.innerWidth / 2;
-    let ty = window.innerHeight / 2;
-    let cx = tx;
-    let cy = ty;
-    let moving = false;
-
-    window.addEventListener(
-      "pointermove",
-      (e) => {
-        tx = e.clientX;
-        ty = e.clientY;
-        if (!moving) {
-          moving = true;
-          loop();
-        }
-      },
-      { passive: true }
-    );
-
-    const loop = () => {
-      // Smooth easing — glow lags behind cursor slightly
-      cx += (tx - cx) * 0.08;
-      cy += (ty - cy) * 0.08;
-      glow.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
-      // Stop animating if we've essentially caught up (saves CPU)
-      if (Math.abs(tx - cx) < 0.5 && Math.abs(ty - cy) < 0.5) {
-        moving = false;
-      } else {
-        requestAnimationFrame(loop);
-      }
-    };
-    loop();
-  }
-
   /* —— Nav active state —— */
   const navLinks = document.querySelectorAll(".nav-links a");
   const sectionIds = ["#about", "#works", "#writing", "#connect"];

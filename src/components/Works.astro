@@ -2,9 +2,13 @@
 import { getCollection } from 'astro:content';
 import ProjectRow from './ProjectRow.astro';
 
-const projects = (await getCollection('projects'))
+const allProjects = (await getCollection('projects'))
   .filter((p) => p.data.featured !== false)
   .sort((a, b) => a.data.order - b.data.order);
+
+const MAX_ON_HOME = 5;
+const projects = allProjects.slice(0, MAX_ON_HOME);
+const showAll = allProjects.length > MAX_ON_HOME;
 ---
 
 <section id="works" class="section">
@@ -14,13 +18,17 @@ const projects = (await getCollection('projects'))
         <div class="section-label">Work</div>
         <h2 class="section-title">Things I've <span class="italic-serif">made</span>.</h2>
       </div>
-      <a class="section-link" href="https://playentry.org/profile/ty2035" target="_blank" rel="noopener">
-        All projects on Entry →
-      </a>
     </div>
 
     <div class="works-index">
       {projects.map((project) => <ProjectRow project={project} />)}
     </div>
+
+    {showAll && (
+      <a class="blog-all" href="/projects/">
+        <span>View all projects</span>
+        <span class="blog-all-arrow">→</span>
+      </a>
+    )}
   </div>
 </section>

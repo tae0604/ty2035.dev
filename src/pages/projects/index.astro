@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.featured !== false)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Work — ty2035.dev"
+  description="All projects by Tae Young Ryu."
+>
+  <main class="index-container">
+    <header class="index-head">
+      <div class="section-label">Work</div>
+      <h1 class="index-title">All <span class="italic-serif">projects</span>.</h1>
+      <p class="index-lede">
+        Everything I've made, newest first. Click any project to read more.
+      </p>
+    </header>
+
+    <div class="works-index">
+      {projects.map((project) => <ProjectRow project={project} />)}
+    </div>
+
+    <nav class="index-back">
+      <a href="/" class="blog-all">
+        <span class="blog-all-arrow">←</span>
+        <span>Back home</span>
+      </a>
+    </nav>
+  </main>
+</BaseLayout>
