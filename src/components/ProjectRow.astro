@@ -6,18 +6,10 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, year, url, tags, thumbImage, thumbColor, thumbIcon } = project.data;
-
-const href = url ?? '#';
-const external = url ? true : false;
+const { title, description, year, tags, thumbImage, thumbColor, thumbIcon } = project.data;
 ---
 
-<a
-  class="work-row"
-  href={href}
-  target={external ? '_blank' : undefined}
-  rel={external ? 'noopener' : undefined}
->
+<a class="work-row" href={`/projects/${project.slug}/`}>
   <div class={`work-thumb ${thumbImage ? '' : `work-thumb--${thumbColor}`}`} aria-hidden="true">
     {thumbImage ? (
       <img src={thumbImage} alt="" />
@@ -74,5 +66,5 @@ const external = url ? true : false;
     {tags.map((tag) => <span class="work-tag">{tag}</span>)}
   </div>
 
-  <div class="work-arrow">↗</div>
+  <div class="work-arrow">→</div>
 </a>

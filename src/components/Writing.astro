@@ -14,24 +14,30 @@ const fmtDate = (d: Date) =>
     <div class="section-head">
       <div class="section-head-left">
         <div class="section-label">Writing</div>
-        <h2 class="section-title">Notes, mostly.</h2>
+        <h2 class="section-title">Notes, <span class="italic-serif">mostly</span>.</h2>
       </div>
     </div>
 
     {posts.length === 0 ? (
       <div class="blog-empty">Nothing here yet. Working on it.</div>
     ) : (
-      <ul class="blog-list">
-        {posts.map((post) => (
-          <li class="blog-item">
-            <a href={`/blog/${post.slug}/`} class="blog-link">
-              <span class="blog-date">{fmtDate(post.data.date)}</span>
-              <span class="blog-title">{post.data.title}</span>
-              <span class="blog-arrow">→</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <>
+        <ul class="blog-list">
+          {posts.map((post) => (
+            <li class="blog-item">
+              <a href={`/blog/${post.slug}/`} class="blog-link">
+                <span class="blog-date">{fmtDate(post.data.date)}</span>
+                <span class="blog-title">{post.data.title}</span>
+                <span class="blog-arrow">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="blog-all" href="/blog/">
+          <span>View all posts</span>
+          <span class="blog-all-arrow">→</span>
+        </a>
+      </>
     )}
   </div>
 </section>

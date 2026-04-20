@@ -1,0 +1,92 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+const { title, description, year, url, tags, thumbImage, thumbColor } = project.data;
+
+// Find prev/next by order
+const all = (await getCollection('projects'))
+  .filter((p) => p.data.featured !== false)
+  .sort((a, b) => a.data.order - b.data.order);
+const idx = all.findIndex((p) => p.slug === project.slug);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+---
+
+<BaseLayout title={`${title} — ty2035.dev`} description={description}>
+  <main class="project-container">
+    <article class="project">
+      <div class="project-meta">
+        <a href="/#works" class="project-back">← Back to work</a>
+        <span class="project-sep">·</span>
+        <span>{year}</span>
+        {tags.length > 0 && tags.map((tag) => (
+          <>
+            <span class="project-sep">·</span>
+            <span class="project-tag">{tag}</span>
+          </>
+        ))}
+      </div>
+
+      <h1 class="project-title">
+        {title}<span class="project-period">.</span>
+      </h1>
+      <p class="project-lede">{description}</p>
+
+      <div class={`project-hero ${thumbImage ? '' : `project-hero--${thumbColor}`}`}>
+        {thumbImage ? (
+          <img src={thumbImage} alt={title} />
+        ) : (
+          <div class="project-hero-placeholder">
+            <span class="project-hero-title">{title}</span>
+          </div>
+        )}
+      </div>
+
+      <div class="post-body project-body">
+        <Content />
+      </div>
+
+      {url && (
+        <div class="project-cta">
+          <a class="btn-primary" href={url} target="_blank" rel="noopener">
+            <span>Open on Entry</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </a>
+        </div>
+      )}
+    </article>
+
+    <nav class="project-nav">
+      {prev ? (
+        <a href={`/projects/${prev.slug}/`} class="project-nav-link project-nav-prev">
+          <span class="project-nav-label">← Previous</span>
+          <span class="project-nav-title">{prev.data.title}</span>
+        </a>
+      ) : <span />}
+      {next ? (
+        <a href={`/projects/${next.slug}/`} class="project-nav-link project-nav-next">
+          <span class="project-nav-label">Next →</span>
+          <span class="project-nav-title">{next.data.title}</span>
+        </a>
+      ) : <span />}
+    </nav>
+  </main>
+</BaseLayout>
