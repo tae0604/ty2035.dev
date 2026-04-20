@@ -19,11 +19,11 @@
   --navy-100:  #c0c5d4;       /* near-white text */
   --navy-50:   #e8eaf0;       /* near-pure text */
 
-  /* page */
-  --bg: var(--navy-700);       /* #262C3E is literally the page bg */
-  --bg-surface: var(--navy-600);
-  --bg-deep: var(--navy-900);
-  --bg-lift: var(--navy-500);
+  /* page — darker base, brand navy is the mid-gradient highlight */
+  --bg: #1e2332;               /* darker than brand for better contrast */
+  --bg-surface: #252b3a;
+  --bg-deep: #141720;
+  --bg-lift: #2e3448;
 
   /* text */
   --fg: var(--navy-50);
@@ -131,11 +131,10 @@ img, svg { display: block; max-width: 100%; }
      The eye registers depth but can't name any color besides navy. */
   background: linear-gradient(
     160deg,
-    #2e344a 0%,     /* navy-600, slightly above brand */
-    #262C3E 35%,    /* BRAND at the natural reading zone */
-    #262C3E 55%,
-    #20253a 80%,    /* slightly below brand */
-    #181d2e 100%    /* navy-900 at the far corner */
+    #262C3E 0%,     /* brand navy at the top */
+    #1e2332 30%,    /* page base */
+    #1a1e2c 60%,
+    #141720 100%    /* deepest at the bottom */
   );
 }
 
@@ -414,10 +413,13 @@ main { position: relative; }
   flex-wrap: wrap;
 }
 .hero-status .status-dot {
-  width: 6px; height: 6px;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent);
   opacity: 0.9;
+  flex-shrink: 0;
   animation: pulse 2.8s infinite;
 }
 .hero-status .status-text { color: var(--fg-dim); }
