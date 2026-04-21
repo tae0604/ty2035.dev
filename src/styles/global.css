@@ -94,7 +94,17 @@ body {
   font-family: var(--f-body);
   font-weight: 400;
   color: var(--fg);
-  background: var(--bg);
+  /* Backdrop gradient moved here so backdrop-filter on fixed nav can see it in Chromium.
+     A simple gradient that evokes #262C3E throughout. */
+  background:
+    linear-gradient(
+      160deg,
+      #262C3E 0%,
+      #1e2332 30%,
+      #1a1e2c 60%,
+      #141720 100%
+    )
+    fixed;
   overflow-x: hidden;
   line-height: 1.55;
   letter-spacing: -0.011em;
@@ -117,8 +127,8 @@ img, svg { display: block; max-width: 100%; }
 .mono { font-family: var(--f-mono); font-size: 0.88em; letter-spacing: 0; }
 
 /* ============================================================
-   BACKDROP — monochrome navy, subtle gradient around #262C3E
-   No colors. No orbs. Just brand navy with barely-there depth.
+   BACKDROP — subtle atmospheric washes on top of body gradient
+   (Main gradient lives on body so Chromium's backdrop-filter works)
    ============================================================ */
 .backdrop {
   position: fixed;
@@ -126,16 +136,6 @@ img, svg { display: block; max-width: 100%; }
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  /* A subtle diagonal gradient — all navy, just different brightness.
-     Top-left is a touch lighter, bottom-right a touch deeper.
-     The eye registers depth but can't name any color besides navy. */
-  background: linear-gradient(
-    160deg,
-    #262C3E 0%,     /* brand navy at the top */
-    #1e2332 30%,    /* page base */
-    #1a1e2c 60%,
-    #141720 100%    /* deepest at the bottom */
-  );
 }
 
 /* Atmospheric wash — lighter spot, upper-left area, animated drift */
