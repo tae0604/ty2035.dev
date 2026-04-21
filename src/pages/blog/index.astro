@@ -8,15 +8,17 @@ const posts = (await getCollection('blog'))
 
 const fmtDate = (d: Date) =>
   new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
+
+const stripMarkers = (s: string) => s.replace(/\*([^*]+)\*/g, '$1');
 ---
 
 <BaseLayout
-  title="Writing — ty2035.dev"
+  title="Blog — ty2035.dev"
   description="Notes and posts by Tae Young Ryu."
 >
   <main class="index-container">
     <header class="index-head">
-      <div class="section-label">Writing</div>
+      <div class="section-label">Blog</div>
       <h1 class="index-title">All <span class="italic-serif">posts</span>.</h1>
       <p class="index-lede">
         Every post I've written, newest first. Some are notes, some are longer thoughts.
@@ -31,7 +33,7 @@ const fmtDate = (d: Date) =>
           <li class="blog-item">
             <a href={`/blog/${post.slug}/`} class="blog-link">
               <span class="blog-date">{fmtDate(post.data.date)}</span>
-              <span class="blog-title">{post.data.title}</span>
+              <span class="blog-title">{stripMarkers(post.data.title)}</span>
               <span class="blog-arrow">→</span>
             </a>
           </li>

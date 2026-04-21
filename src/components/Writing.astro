@@ -11,16 +11,8 @@ const posts = allPosts.slice(0, 5);
 const fmtDate = (d: Date) =>
   new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
 
-// Helper: render titles with *italic* markers → italic-serif span
-// e.g. "Hello *world*" → Hello <em>world</em>
-const renderTitle = (title: string) => {
-  return title.split(/(\*[^*]+\*)/g).map((chunk) => {
-    if (chunk.startsWith('*') && chunk.endsWith('*')) {
-      return { italic: true, text: chunk.slice(1, -1) };
-    }
-    return { italic: false, text: chunk };
-  });
-};
+// Strip *italic* markers for list display — italic rendering only applies on the post page
+const stripMarkers = (s: string) => s.replace(/\*([^*]+)\*/g, '$1');
 ---
 
 <section id="writing" class="section">
@@ -41,11 +33,7 @@ const renderTitle = (title: string) => {
             <li class="blog-item">
               <a href={`/blog/${post.slug}/`} class="blog-link">
                 <span class="blog-date">{fmtDate(post.data.date)}</span>
-                <span class="blog-title">
-                  {renderTitle(post.data.title).map((part) =>
-                    part.italic ? <span class="italic-serif">{part.text}</span> : part.text
-                  )}
-                </span>
+                <span class="blog-title">{stripMarkers(post.data.title)}</span>
                 <span class="blog-arrow">→</span>
               </a>
             </li>

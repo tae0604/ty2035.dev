@@ -7,6 +7,10 @@ interface Props {
 
 const { project } = Astro.props;
 const { title, description, year, tags, thumbImage, thumbColor, thumbIcon } = project.data;
+
+// Strip *italic* markers for the list display — keep it plain and clean.
+// Markers are only applied on the detail page.
+const cleanTitle = title.replace(/\*([^*]+)\*/g, '$1');
 ---
 
 <a class="work-row" href={`/projects/${project.slug}/`}>
@@ -58,7 +62,7 @@ const { title, description, year, tags, thumbImage, thumbColor, thumbIcon } = pr
   <div class="work-year">{year}</div>
 
   <div>
-    <div class="work-title">{title}</div>
+    <div class="work-title">{cleanTitle}</div>
     <div class="work-desc">{description}</div>
   </div>
 

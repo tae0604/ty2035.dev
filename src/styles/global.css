@@ -123,7 +123,7 @@ img, svg { display: block; max-width: 100%; }
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
   /* A subtle diagonal gradient — all navy, just different brightness.
@@ -178,20 +178,20 @@ img, svg { display: block; max-width: 100%; }
 .orb { display: none; }
 .section::before { display: none; }
 
-/* Vignette — very subtle */
+/* Vignette — very subtle, sits above backdrop */
 .vignette {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
 }
 
-/* Grain — essential for mono designs, keeps it from looking flat */
+/* Grain — above backdrop, blends with vignette */
 .grain {
   position: fixed;
   inset: -10%;
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
   opacity: 0.08;
   mix-blend-mode: overlay;
@@ -199,7 +199,14 @@ img, svg { display: block; max-width: 100%; }
   background-size: 240px 240px;
 }
 
-/* Scroll progress — almost invisible */
+/* Main content — above backdrop/vignette so nav backdrop-filter has content to blur */
+main,
+.foot {
+  position: relative;
+  z-index: 2;
+}
+
+/* Scroll progress — on top of everything except nav */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
@@ -266,17 +273,20 @@ img, svg { display: block; max-width: 100%; }
   justify-content: space-between;
   gap: 12px;
   padding: 7px 8px 7px 18px;
-  background: rgba(20, 23, 32, 0.45);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  /* Low opacity so the blur behind is visible */
+  background: rgba(20, 23, 32, 0.35);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   border-radius: var(--r-full);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.07);
-  /* Force GPU compositing — critical for reliable backdrop-filter rendering */
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  /* Critical for backdrop-filter in some browsers */
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   will-change: backdrop-filter;
+  isolation: isolate;
 }
 .nav-brand {
   display: flex;
