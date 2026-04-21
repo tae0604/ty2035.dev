@@ -87,6 +87,8 @@ html {
   scroll-behavior: smooth;
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  /* Fallback solid color so there's no white flash */
+  background: #1e2332;
 }
 
 body {
@@ -94,17 +96,18 @@ body {
   font-family: var(--f-body);
   font-weight: 400;
   color: var(--fg);
-  /* Backdrop gradient moved here so backdrop-filter on fixed nav can see it in Chromium.
-     A simple gradient that evokes #262C3E throughout. */
-  background:
-    linear-gradient(
-      160deg,
-      #262C3E 0%,
-      #1e2332 30%,
-      #1a1e2c 60%,
-      #141720 100%
-    )
-    fixed;
+  /* Gradient painted directly on body — no separate fixed layer.
+     Chromium's backdrop-filter can see body's own background reliably. */
+  background: linear-gradient(
+    160deg,
+    #262C3E 0%,
+    #1e2332 30%,
+    #1a1e2c 60%,
+    #141720 100%
+  );
+  background-attachment: fixed;
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
   overflow-x: hidden;
   line-height: 1.55;
   letter-spacing: -0.011em;
@@ -178,20 +181,20 @@ img, svg { display: block; max-width: 100%; }
 .orb { display: none; }
 .section::before { display: none; }
 
-/* Vignette — very subtle, sits above backdrop */
+/* Vignette — subtle darkening at edges, behind content */
 .vignette {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
 }
 
-/* Grain — above backdrop, blends with vignette */
+/* Grain — above backdrop, blends with vignette, behind content */
 .grain {
   position: fixed;
   inset: -10%;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
   opacity: 0.08;
   mix-blend-mode: overlay;
@@ -199,11 +202,12 @@ img, svg { display: block; max-width: 100%; }
   background-size: 240px 240px;
 }
 
-/* Main content — above backdrop/vignette so nav backdrop-filter has content to blur */
+/* Main content flows naturally — no z-index which would create a stacking
+   context and break backdrop-filter in Chromium. The nav is z:100,
+   everything else is the natural document flow. */
 main,
 .foot {
   position: relative;
-  z-index: 2;
 }
 
 /* Scroll progress — on top of everything except nav */
