@@ -236,7 +236,6 @@ main,
     0 1px 2px rgba(0, 0, 0, 0.25),
     0 6px 20px -4px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.05);
-  isolation: isolate;
 }
 .glass::before {
   content: "";
@@ -286,17 +285,12 @@ main,
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.08);
-  /* Critical for backdrop-filter in some browsers */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: backdrop-filter;
-  isolation: isolate;
 }
 .nav-brand {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 12.5px;
   color: var(--fg);
   font-weight: 500;
@@ -333,7 +327,7 @@ main,
 .nav-links a {
   display: inline-block;
   padding: 8px 12px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 12.5px;
   color: var(--fg-dim);
   border-radius: var(--r-full);
@@ -378,7 +372,7 @@ main { position: relative; }
 }
 .section-head-left { flex: 1; min-width: 240px; }
 .section-label {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-micro);
   color: var(--fg-dimmer);
   letter-spacing: 0.08em;
@@ -534,7 +528,7 @@ main { position: relative; }
   align-items: baseline;
 }
 .hero-facts dt {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-micro);
   color: var(--fg-dimmer);
   text-transform: uppercase;
@@ -625,7 +619,7 @@ main { position: relative; }
   gap: 10px;
 }
 .aside-key {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-micro);
   color: var(--fg-dimmer);
   text-transform: uppercase;
