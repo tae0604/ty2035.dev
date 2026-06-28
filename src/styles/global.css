@@ -96,18 +96,6 @@ body {
   font-family: var(--f-body);
   font-weight: 400;
   color: var(--fg);
-  /* Gradient painted directly on body — no separate fixed layer.
-     Chromium's backdrop-filter can see body's own background reliably. */
-  background: linear-gradient(
-    160deg,
-    #262C3E 0%,
-    #1e2332 30%,
-    #1a1e2c 60%,
-    #141720 100%
-  );
-  background-attachment: fixed;
-  background-size: 100% 100vh;
-  background-repeat: no-repeat;
   overflow-x: hidden;
   line-height: 1.55;
   letter-spacing: -0.011em;
@@ -115,6 +103,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "ss01", "cv01", "cv11";
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    160deg,
+    #262C3E 0%,
+    #1e2332 30%,
+    #1a1e2c 60%,
+    #141720 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-move 25s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 ::selection { background: var(--accent-soft); color: var(--fg); }
@@ -264,8 +275,10 @@ main,
 .nav {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 100;
   width: min(calc(100% - 24px), 520px);
   animation: drop-in 800ms 100ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -340,8 +353,8 @@ main,
 .nav-links a.active { color: var(--fg); }
 
 @keyframes drop-in {
-  from { opacity: 0; transform: translate(-50%, -20px); }
-  to   { opacity: 1; transform: translate(-50%, 0); }
+  from { opacity: 0; margin-top: -20px; }
+  to   { opacity: 1; margin-top: 0; }
 }
 
 /* ============================================================
@@ -400,7 +413,7 @@ main { position: relative; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dim);
   padding: 8px 14px;
@@ -420,7 +433,7 @@ main { position: relative; }
   margin-top: 24px;
   font-size: 12px;
   color: var(--fg-dimmer);
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   line-height: 1.6;
 }
 .note code {
@@ -453,7 +466,7 @@ main { position: relative; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   letter-spacing: 0;
@@ -650,7 +663,7 @@ main { position: relative; }
    SECTION LINK (top-right "All projects on Entry →")
    ============================================================ */
 .section-link {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dim);
   white-space: nowrap;
@@ -733,7 +746,7 @@ main { position: relative; }
 .work-thumb--navy   { background: linear-gradient(140deg, #2e344a 0%, #262C3E 100%); }
 
 .work-year {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   font-variant-numeric: tabular-nums;
@@ -759,7 +772,7 @@ main { position: relative; }
   justify-content: flex-end;
 }
 .work-tag {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 10.5px;
   color: var(--fg-dimmer);
   letter-spacing: 0;
@@ -770,7 +783,7 @@ main { position: relative; }
   color: var(--fg-dim);
   opacity: 0;
   transition: all var(--t-fast);
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   text-align: right;
 }
 
@@ -812,7 +825,7 @@ main { position: relative; }
 .blog-item:hover .blog-arrow { opacity: 1; transform: translateX(3px); color: var(--fg); }
 
 .blog-date {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   font-variant-numeric: tabular-nums;
@@ -825,7 +838,7 @@ main { position: relative; }
   transition: color var(--t-fast);
 }
 .blog-arrow {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 14px;
   color: var(--fg-dim);
   opacity: 0;
@@ -833,7 +846,7 @@ main { position: relative; }
 }
 .blog-empty {
   padding: 24px 0;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   font-style: italic;
@@ -844,7 +857,7 @@ main { position: relative; }
   align-items: center;
   gap: 8px;
   margin-top: 24px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dim);
   padding: 10px 18px;
@@ -937,7 +950,7 @@ main { position: relative; }
   letter-spacing: -0.012em;
 }
 .link-handle {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 11.5px;
   color: var(--fg-dim);
   margin-top: 2px;
@@ -952,7 +965,7 @@ main { position: relative; }
 }
 
 .link-arrow {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: 13px;
   color: var(--fg-dim);
   opacity: 0.4;
@@ -978,7 +991,7 @@ main { position: relative; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   background: var(--bg-deep);
   border: 1px solid var(--line-strong);
   border-radius: var(--r-full);
@@ -1023,7 +1036,7 @@ main { position: relative; }
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   line-height: 1.5;
@@ -1034,7 +1047,7 @@ main { position: relative; }
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   text-align: right;
@@ -1096,7 +1109,7 @@ main { position: relative; }
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-mono);
   color: var(--fg-dimmer);
   letter-spacing: 0.02em;
@@ -1220,7 +1233,7 @@ main { position: relative; }
   border-bottom: none;
 }
 .project-detail dt {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-micro);
   color: var(--fg-dimmer);
   text-transform: uppercase;
@@ -1298,7 +1311,7 @@ main { position: relative; }
 .project-nav-prev { text-align: left; }
 .project-nav-next { text-align: right; }
 .project-nav-label {
-  font-family: var(--f-mono);
+  font-family: var(--f-body);
   font-size: var(--t-micro);
   color: var(--fg-dimmer);
   letter-spacing: 0.06em;
