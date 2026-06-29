@@ -262,3 +262,7 @@
     align-self: flex-end;
   }
 }
+
+.post-project-thumb {
+  width: 80px;
+}
