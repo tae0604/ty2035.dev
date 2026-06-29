@@ -14,7 +14,8 @@ interface Props {
 
 const { title, description, date, tags = [], readTime, projectLink } = Astro.props;
 
-const relatedProject = projectLink ? await getEntry('projects', projectLink) : null;
+const cleanProjectLink = projectLink ? projectLink.split('#')[0].replace(/['"]/g, '').trim().toLowerCase() : '';
+const relatedProject = cleanProjectLink ? await getEntry('projects', cleanProjectLink) : null;
 
 const fmtDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric', month: 'long', day: 'numeric',
