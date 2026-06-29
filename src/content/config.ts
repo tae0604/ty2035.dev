@@ -23,6 +23,7 @@ const projects = defineCollection({
     year: z.number(),
     url: z.string().url().optional(),
     tags: z.array(z.string()).default([]),
+    linkText: z.string().optional(),
 
     // Thumbnail: image (in /public/thumbnails/) OR color+icon fallback
     thumbImage: z.string().optional(),

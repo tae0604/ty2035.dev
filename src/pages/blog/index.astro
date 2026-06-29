@@ -6,6 +6,8 @@ const posts = (await getCollection('blog'))
   .filter((p) => p.data.draft !== true)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+const allTags = [...new Set(posts.flatMap((post) => post.data.tags || []))].sort();
+
 const fmtDate = (d: Date) =>
   new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
 
@@ -25,12 +27,21 @@ const stripMarkers = (s: string) => s.replace(/\*([^*]+)\*/g, '$1');
       </p>
     </header>
 
+    {allTags.length > 0 && (
+      <div class="blog-filters">
+        <button class="filter-tag active" data-tag="all">All</button>
+        {allTags.map((tag) => (
+          <button class="filter-tag" data-tag={tag}>#{tag}</button>
+        ))}
+      </div>
+    )}
+
     {posts.length === 0 ? (
       <div class="blog-empty">Nothing here yet. Working on it.</div>
     ) : (
       <ul class="blog-list">
         {posts.map((post) => (
-          <li class="blog-item">
+          <li class="blog-item" data-tags={JSON.stringify(post.data.tags || [])}>
             <a href={`/blog/${post.slug}/`} class="blog-link">
               <span class="blog-date">{fmtDate(post.data.date)}</span>
               <span class="blog-title">{stripMarkers(post.data.title)}</span>
@@ -48,4 +59,29 @@ const stripMarkers = (s: string) => s.replace(/\*([^*]+)\*/g, '$1');
       </a>
     </nav>
   </main>
+
+  <script>
+    const buttons = document.querySelectorAll('.filter-tag');
+    const items = document.querySelectorAll('.blog-item');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const selectedTag = btn.getAttribute('data-tag');
+
+        items.forEach((item) => {
+          const tagsAttr = item.getAttribute('data-tags');
+          const tags = tagsAttr ? JSON.parse(tagsAttr) : [];
+
+          if (selectedTag === 'all' || tags.includes(selectedTag)) {
+            (item as HTMLElement).style.display = 'block';
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </BaseLayout>

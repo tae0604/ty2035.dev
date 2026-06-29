@@ -18,7 +18,12 @@ interface Props {
 const { project } = Astro.props;
 const { Content } = await project.render();
 const data = project.data;
-const { title, description, year, url, tags, thumbImage, thumbColor, videoUrl, details } = data;
+const { title, description, year, url, tags, thumbImage, thumbColor, videoUrl, details, linkText } = data;
+
+// Parse Entry project URL to get iframe embed URL
+const entryEmbedUrl = url && url.includes('playentry.org/project/')
+  ? url.replace('/project/', '/iframe/')
+  : null;
 
 // Parse "Hello *world*" → italic segments
 const titleParts = title.split(/(\*[^*]+\*)/g).map((chunk) => {
@@ -92,6 +97,17 @@ const toEmbed = (rawUrl: string) => {
         )}
       </div>
 
+      {entryEmbedUrl && (
+        <div class="project-entry-player">
+          <iframe
+            src={entryEmbedUrl}
+            title={`${plainTitle} — Entry player`}
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      )}
+
       {videoUrl && (
         <div class="project-video">
           <iframe
@@ -122,7 +138,7 @@ const toEmbed = (rawUrl: string) => {
       {url && (
         <div class="project-cta">
           <a class="btn-primary" href={url} target="_blank" rel="noopener">
-            <span>Open on Entry</span>
+            <span>{linkText || "Open on Entry"}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M7 17L17 7M7 7h10v10" />
             </svg>

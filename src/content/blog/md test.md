@@ -6,6 +6,8 @@ description: "웹 기술과 엔트리를 결합하여 가상 운영체제 'Aurum
 
 date: 2026-06-30
 
+draft: true
+
 tags: ["Design", "Entry", "Front-end"]
 
 readTime: "4 min read"
