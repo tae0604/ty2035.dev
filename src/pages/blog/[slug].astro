@@ -16,7 +16,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
-const { title, description, date, tags, readTime } = post.data;
+const { title, description, date, tags, readTime, projectLink } = post.data;
 ---
 
 <PostLayout
@@ -25,6 +25,7 @@ const { title, description, date, tags, readTime } = post.data;
   date={date}
   tags={tags}
   readTime={readTime}
+  projectLink={projectLink}
 >
   <Content />
 </PostLayout>

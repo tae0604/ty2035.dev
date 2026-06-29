@@ -193,3 +193,72 @@
   border-color: rgba(255, 255, 255, 0.28);
 }
 .post-nav-link--right { margin-left: auto; }
+
+/* Related project link inside blog post */
+.post-project-link {
+  margin-top: clamp(40px, 6vw, 60px);
+  padding-top: clamp(24px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+}
+.post-project-link-label {
+  font-family: var(--f-body);
+  font-size: var(--t-micro);
+  color: var(--fg-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.post-project-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  transition: all var(--t-fast);
+}
+.post-project-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+.post-project-card-info {
+  flex: 1;
+  min-width: 0;
+}
+.post-project-card-title {
+  display: block;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--fg);
+  margin-bottom: 4px;
+  letter-spacing: -0.015em;
+}
+.post-project-card-desc {
+  font-size: 13.5px;
+  color: var(--fg-dim);
+  line-height: 1.45;
+}
+.post-project-card-arrow {
+  font-family: var(--f-body);
+  font-size: 12.5px;
+  color: var(--fg-dim);
+  white-space: nowrap;
+  transition: color var(--t-fast);
+}
+.post-project-card:hover .post-project-card-arrow {
+  color: var(--fg);
+}
+@media (max-width: 600px) {
+  .post-project-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+  .post-project-card-arrow {
+    align-self: flex-end;
+  }
+}

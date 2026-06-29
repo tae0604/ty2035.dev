@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { getEntry } from 'astro:content';
 import '../styles/blog.css';
 
 interface Props {
@@ -8,9 +9,12 @@ interface Props {
   date: Date;
   tags?: string[];
   readTime?: string;
+  projectLink?: string;
 }
 
-const { title, description, date, tags = [], readTime } = Astro.props;
+const { title, description, date, tags = [], readTime, projectLink } = Astro.props;
+
+const relatedProject = projectLink ? await getEntry('projects', projectLink) : null;
 
 const fmtDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric', month: 'long', day: 'numeric',
@@ -59,6 +63,19 @@ const plainTitle = title.replace(/\*([^*]+)\*/g, '$1');
       <div class="post-body">
         <slot />
       </div>
+
+      {relatedProject && (
+        <div class="post-project-link">
+          <div class="post-project-link-label">Related Project</div>
+          <a href={`/projects/${relatedProject.slug}/`} class="post-project-card">
+            <div class="post-project-card-info">
+              <span class="post-project-card-title">{relatedProject.data.title.replace(/\*([^*]+)\*/g, '$1')}</span>
+              <p class="post-project-card-desc">{relatedProject.data.description}</p>
+            </div>
+            <span class="post-project-card-arrow">View Project →</span>
+          </a>
+        </div>
+      )}
     </article>
 
     <nav class="post-nav">

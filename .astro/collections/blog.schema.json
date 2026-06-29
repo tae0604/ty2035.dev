@@ -40,6 +40,9 @@
         "readTime": {
           "type": "string"
         },
+        "projectLink": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }
