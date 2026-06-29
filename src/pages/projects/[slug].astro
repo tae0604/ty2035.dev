@@ -22,7 +22,7 @@ const { title, description, year, url, tags, thumbImage, thumbColor, videoUrl, d
 
 // Parse Entry project URL to get iframe embed URL
 const entryEmbedUrl = url && url.includes('playentry.org/project/')
-  ? url.replace('/project/', '/iframe/')
+  ? `https://playentry.org/api/project/iframe/${url.split('/project/')[1]}`
   : null;
 
 // Parse "Hello *world*" → italic segments
