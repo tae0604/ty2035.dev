@@ -1,6 +1,6 @@
 /* ============================================================
    ty2035.dev — Editorial portfolio
-   Base colour: #262C3E (brand navy)
+   Brand colour: #262C3E (navy)
    ============================================================ */
 
 /* ——— Design tokens ——— */
@@ -19,8 +19,8 @@
   --navy-100:  #c0c5d4;       /* near-white text */
   --navy-50:   #e8eaf0;       /* near-pure text */
 
-  /* page — darker base, brand navy is the mid-gradient highlight */
-  --bg: #1e2332;               /* darker than brand for better contrast */
+  /* page and surfaces */
+  --bg: #080808;
   --bg-surface: #252b3a;
   --bg-deep: #141720;
   --bg-lift: #2e3448;
@@ -87,8 +87,7 @@ html {
   scroll-behavior: smooth;
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
-  /* Fallback solid color so there's no white flash */
-  background: #1e2332;
+  background: var(--bg);
 }
 
 body {
@@ -105,29 +104,6 @@ body {
   font-feature-settings: "ss01", "cv01", "cv11";
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    160deg,
-    #262C3E 0%,
-    #1e2332 30%,
-    #1a1e2c 60%,
-    #141720 100%
-  );
-  background-size: 400% 400%;
-  animation: gradient-move 25s ease infinite;
-  pointer-events: none;
-}
-
-@keyframes gradient-move {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 ::selection { background: var(--accent-soft); color: var(--fg); }
 
 a { color: inherit; text-decoration: none; }
@@ -140,78 +116,9 @@ img, svg { display: block; max-width: 100%; }
 .italic-serif { font-family: var(--f-display); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
 .mono { font-family: var(--f-mono); font-size: 0.88em; letter-spacing: 0; }
 
-/* ============================================================
-   BACKDROP — subtle atmospheric washes on top of body gradient
-   (Main gradient lives on body so Chromium's backdrop-filter works)
-   ============================================================ */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* Atmospheric wash — lighter spot, upper-left area, animated drift */
-.backdrop::before {
-  content: "";
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 80vw;
-  height: 80vh;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.04) 0%,
-    rgba(255, 255, 255, 0.015) 30%,
-    transparent 60%
-  );
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-/* Darker spot, lower-right area, animated drift */
-.backdrop::after {
-  content: "";
-  position: absolute;
-  bottom: -20%;
-  right: -15%;
-  width: 85vw;
-  height: 80vh;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0.08) 30%,
-    transparent 60%
-  );
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
 /* Kill any leftover orbs */
 .orb { display: none; }
 .section::before { display: none; }
-
-/* Vignette — subtle darkening at edges, behind content */
-.vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
-}
-
-/* Grain — above backdrop, blends with vignette, behind content */
-.grain {
-  position: fixed;
-  inset: -10%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 240px 240px;
-}
 
 /* Main content flows naturally — no z-index which would create a stacking
    context and break backdrop-filter in Chromium. The nav is z:100,
@@ -1390,49 +1297,4 @@ main { position: relative; }
   margin-top: clamp(40px, 6vw, 64px);
   padding-top: clamp(24px, 3vw, 36px);
   border-top: 1px solid var(--line);
-}
-
-/* ============================================================
-   ANIMATED BACKGROUND — slow drift on the gradient layers
-   Subtle enough to not be distracting, but the page feels alive
-   ============================================================ */
-.backdrop::before {
-  animation: drift-1 50s ease-in-out infinite;
-}
-.backdrop::after {
-  animation: drift-2 64s ease-in-out infinite;
-}
-
-@keyframes drift-1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  33% {
-    transform: translate(-6%, 4%) scale(1.08);
-    opacity: 0.85;
-  }
-  66% {
-    transform: translate(4%, -3%) scale(1.04);
-    opacity: 0.92;
-  }
-}
-
-@keyframes drift-2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translate(5%, -5%) scale(0.95);
-    opacity: 0.8;
-  }
-}
-
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  .backdrop::before,
-  .backdrop::after { animation: none; }
 }
